@@ -14,3 +14,4 @@ if not os.path.exists('dataset/sortedTrain'):
 # Copy images to associated folder
 for index, row in df.iterrows():
     copyfile('dataset/train/' + row['Image'], 'dataset/sortedTrain/' + row['Class'] + '/' + row['Image'])
+
