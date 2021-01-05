@@ -13,15 +13,19 @@ from keras.regularizers import l2
 from keras import backend as K
 
 class ResNet_v1:
-    # data: input to the residual module
-    # K: number of filters that will be learned by the final convolutional layer (the first two convolutional layers will learn K/4 filters)
-    # stride: controls the stride of the convolution (will help us reduce spatial dimensions without using max pooling)
-    # chanDim: defines the axis which will perform batch normalization
-    # red (i.e. reduce) will control whether we are reducing spatial dimensions (True) or not (False) as not all residual modules will reduce dimensions of our spatial volume
-    # reg: applies regularization strength for all convolutional layers in the residual module
-    # bnEps: controls the Ɛ responsible for avoiding “division by zero” errors when normalizing inputs
-    # bnMom: controls the momentum for the moving average
+    @staticmethod
     def residual_module(data, K, stride, chanDim, red=False, reg=0.0001, bnEps=2e-5, bnMom=0.9):
+        """
+        :param data: input to the residual module
+        :param K: number of filters that will be learned by the final convolutional layer (the first two convolutional layers will learn K/4 filters)
+        :param stride: controls the stride of the convolution (will help us reduce spatial dimensions without using max pooling)
+        :param chanDim: defines the axis which will perform batch normalization
+        :param red: (i.e. reduce) will control whether we are reducing spatial dimensions (True) or not (False) as not all residual modules will reduce dimensions of our spatial volume
+        :param reg: applies regularization strength for all convolutional layers in the residual module
+        :param bnEps: controls the Ɛ responsible for avoiding “division by zero” errors when normalizing inputs
+        :param bnMom: controls the momentum for the moving average
+        :return: Output = input + layer(input)
+        """
 
         shortcut = data
 
@@ -50,14 +54,21 @@ class ResNet_v1:
         # the output of the ResNet module is the addition of the shortcut and the third bloc last convolution
         return x
 
-    # width, height and depth are the input shape of the model
-    # classes is the number of categories
-    # stages are de different steps where we change our filter size
-    # filters are the different filters sizes that will we used acress the architecture
-    # reg: applies regularization strength for all convolutional layers in the residual module
-    # bnEps: controls the Ɛ responsible for avoiding “division by zero” errors when normalizing inputs
-    # bnMom: controls the momentum for the moving average
+    @staticmethod
     def build(width, height, depth, classes, stages, filters, reg=0.0001, bnEps=2e-5, bnMom=0.9):
+        """
+        :param width: Width of the model
+        :param height: Height of the model
+        :param depth: Depth of the model
+        :param classes: Number of categories
+        :param stages: Different steps where our filter size change
+        :param filters: Filters sizes that will we used across the architecture
+        :param reg: Regularization strength for all convolution layers in the residual module
+        :param bnEps: Ɛ responsible for avoiding “division by zero” errors when normalizing inputs
+        :param bnMom: Momentum for the moving average
+        :return: return a full fledged resnet module
+        """
+
         inputShape = (height, width, depth)
         chanDim = -1
 
