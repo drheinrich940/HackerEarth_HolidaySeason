@@ -1,3 +1,4 @@
+from keras.layers.experimental.preprocessing import Rescaling
 from keras.layers.normalization import BatchNormalization
 from keras.layers.convolutional import Conv2D
 from keras.layers.convolutional import AveragePooling2D
@@ -57,9 +58,9 @@ class ResNet_v1:
     @staticmethod
     def build(width, height, depth, classes, stages, filters, reg=0.0001, bnEps=2e-5, bnMom=0.9):
         """
-        :param width: Width of the model
-        :param height: Height of the model
-        :param depth: Depth of the model
+        :param width: Width of the model input
+        :param height: Height of the model input
+        :param depth: Depth of the model input
         :param classes: Number of categories
         :param stages: Different steps where our filter size change
         :param filters: Filters sizes that will we used across the architecture
@@ -79,7 +80,9 @@ class ResNet_v1:
 
         # set the input and apply BN
         inputs = Input(shape=inputShape)
-        x = BatchNormalization(axis=chanDim, epsilon=bnEps, momentum=bnMom)(inputs)
+        # Normalize pixel values from 255 to [0,1]
+        x = Rescaling(1./255, input_shape=(height, width, depth))(inputs)
+        x = BatchNormalization(axis=chanDim, epsilon=bnEps, momentum=bnMom)(x)
 
         # apply CONV => BN => ACT => POOL to reduce spatial size. Original paper presents a 7x7 kernel.
         x = Conv2D(filters[0], (5, 5), use_bias=False, padding="same", kernel_regularizer=l2(reg))(x)
