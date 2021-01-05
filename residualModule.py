@@ -8,8 +8,19 @@ from tensorflow.python.keras.regularizers import l2
 
 class ResNet:
     @staticmethod
-    def residual_module(data, K, stride, chanDim,
+    def residual_module(data, K, stride, chanDim, red=False,
                         reg=0.0001, bnEps=2e-5, bnMom=0.9):
+        """
+        :param data: input to the residual module
+        :param K: number of filters that will be learned by the final convolutional layer (the first two convolutional layers will learn K/4 filters)
+        :param stride: controls the stride of the convolution (will help us reduce spatial dimensions without using max pooling)
+        :param chanDim: defines the axis which will perform batch normalization
+        :param red: (i.e. reduce) will control whether we are reducing spatial dimensions (True) or not (False) as not all residual modules will reduce dimensions of our spatial volume
+        :param reg: applies regularization strength for all convolutional layers in the residual module
+        :param bnEps: controls the Ɛ responsible for avoiding “division by zero” errors when normalizing inputs
+        :param bnMom: controls the momentum for the moving average
+        :return: Output = input + layer(input)
+        """
         # the shortcut branch of the ResNet module should be
         # initialize as the input (identity) data
         shortcut = data
@@ -31,6 +42,10 @@ class ResNet:
         act3 = Activation("relu")(bn3)
         conv3 = Conv2D(K, (1, 1), use_bias=False, kernel_regularizer=l2(reg))(act3)
 
+        # if we want to reduce the spatial size, apply a convolutional layer to the shortcut
+        if red:
+            shortcut = Conv2D(K, (1, 1), strides=stride, use_bias=False, kernel_regularizer=l2(reg))(act1)
+
         # add together the shortcut and the final CONV
         x = add([conv3, shortcut])
 
@@ -40,6 +55,18 @@ class ResNet:
     @staticmethod
     def build(width, height, depth, classes, stages, filters,
               reg=0.0001, bnEps=2e-5, bnMom=0.9):
+        """
+        :param width: Width of the model
+        :param height: Height of the model
+        :param depth: Depth of the model
+        :param classes: Number of categories
+        :param stages: Different steps where our filter size change
+        :param filters: Filters sizes that will we used across the architecture
+        :param reg: Regularization strength for all convolution layers in the residual module
+        :param bnEps: Ɛ responsible for avoiding “division by zero” errors when normalizing inputs
+        :param bnMom: Momentum for the moving average
+        :return: return a full fledged resnet module
+        """
         # initialize the input shape to be "channels last" and the
         # channels dimension itself
         inputShape = (height, width, depth)
