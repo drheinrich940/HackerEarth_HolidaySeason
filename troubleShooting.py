@@ -1,3 +1,5 @@
+from keras_preprocessing.image import ImageDataGenerator
+
 from resnet_v1 import ResNet_v1
 from keras.optimizers import Adam
 from keras.losses import SparseCategoricalCrossentropy
@@ -5,14 +7,15 @@ from keras.metrics import SparseCategoricalAccuracy
 import tensorflow as tf
 import matplotlib.pyplot as plt
 
-
 imgWidth = 80
 imgHeight = 300
 imgDepth = 3
 batchSize = 8
 epochs = 100
 num_classes = 6
+AUTOTUNE = tf.data.experimental.AUTOTUNE
 
+# Classical loading, no data augmentation
 train_ds = tf.keras.preprocessing.image_dataset_from_directory(
   'dataset\\trainSorted',
   validation_split=0.2,
@@ -21,23 +24,30 @@ train_ds = tf.keras.preprocessing.image_dataset_from_directory(
   image_size=(imgHeight, imgWidth),
   batch_size=batchSize)
 
+# train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
+#
+# train_datagen = ImageDataGenerator(horizontal_flip=True)
+# train_generator = train_datagen.flow_from_directory('dataset\\trainSorted',
+#                                                     subset="training",
+#                                                     seed=123,
+#                                                     target_size=(imgHeight, imgWidth),
+#                                                     batch_size=batchSize)
+
 val_ds = tf.keras.preprocessing.image_dataset_from_directory(
-  'dataset\\trainSorted',
-  validation_split=0.2,
-  subset="validation",
-  seed=123,
-  image_size=(imgHeight, imgWidth),
-  batch_size=batchSize)
+    'dataset\\trainSorted',
+    validation_split=0.2,
+    subset="validation",
+    seed=123,
+    image_size=(imgHeight, imgWidth),
+    batch_size=batchSize)
 
-AUTOTUNE = tf.data.experimental.AUTOTUNE
-
-train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
 val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
 
 stages = (3, 6, 9)
 filters = (64, 128, 256, 512)
 
-model = ResNet_v1.build(width=imgWidth, height=imgHeight, depth=imgDepth, classes=num_classes, stages=stages, filters=filters)
+model = ResNet_v1.build(width=imgWidth, height=imgHeight, depth=imgDepth, classes=num_classes, stages=stages,
+                        filters=filters)
 
 model.compile(
     optimizer=Adam(),  # Optimizer
@@ -48,12 +58,10 @@ model.compile(
 )
 
 history = model.fit(
-  train_ds,
-  validation_data=val_ds,
-  epochs=epochs
+    train_ds,
+    validation_data=val_ds,
+    epochs=epochs
 )
-
-
 
 acc = history.history['accuracy']
 val_acc = history.history['val_accuracy']
