@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import tensorflow as tf
+from keras_preprocessing.image import ImageDataGenerator
 
 IMAG_WIDTH = 80
 IMG_HEIGHT = 300
@@ -36,7 +37,30 @@ def training(model, epochs):
     )
 
 
-def plotTrainingResults(history, epochs):
+def training_augmented(model, epochs):
+    train_datagen = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
+    val_datagen = ImageDataGenerator()
+
+    train_generator = train_datagen.flow_from_directory(
+        'dataset\\augmented\\trainAugmented',
+        target_size=(IMG_HEIGHT, IMAG_WIDTH),
+        batch_size=BATCH_SIZE,
+        class_mode='sparse')
+
+    val_generator = val_datagen.flow_from_directory(
+        'dataset\\augmented\\validationAugmented',
+        target_size=(IMG_HEIGHT, IMAG_WIDTH),
+        batch_size=BATCH_SIZE,
+        class_mode='sparse')
+
+    return model.fit(
+        train_generator,
+        validation_data=val_generator,
+        epochs=epochs
+    )
+
+
+def plot_training_results(history, epochs):
     acc = history.history['accuracy']
     val_acc = history.history['val_accuracy']
 

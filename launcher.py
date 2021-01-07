@@ -3,7 +3,7 @@ from keras.optimizers import Adam
 import trainingFunctions
 from resnet_v1 import ResNet_v1
 
-EPOCHS = 2
+EPOCHS = 20
 
 stages = (3, 6, 9)
 filters = (64, 128, 256, 512)
@@ -18,5 +18,5 @@ model.compile(
     metrics=['accuracy'],
 )
 
-history = trainingFunctions.training(model, EPOCHS)
-trainingFunctions.plotTrainingResults(history, EPOCHS)
+history = trainingFunctions.training_augmented(model, EPOCHS)
+trainingFunctions.plot_training_results(history, EPOCHS)
