@@ -1,16 +1,12 @@
 from keras.losses import SparseCategoricalCrossentropy
 from keras.optimizers import Adam
+from trainingConstants import *
 import trainingFunctions
 from resnet_v1 import ResNet_v1
 
-EPOCHS = 20
-
-stages = (3, 6, 9)
-filters = (64, 128, 256, 512)
-
-model = ResNet_v1.build(width=trainingFunctions.IMAG_WIDTH, height=trainingFunctions.IMG_HEIGHT, depth=trainingFunctions.IMG_DEPTH,
-                        classes=trainingFunctions.NB_CLASSES, stages=stages,
-                        filters=filters)
+model = ResNet_v1.build(width=IMAG_WIDTH, height=IMG_HEIGHT, depth=IMG_DEPTH,
+                        classes=NB_CLASSES, stages=STAGES,
+                        filters=FILTERS)
 
 model.compile(
     optimizer=Adam(),
@@ -19,4 +15,5 @@ model.compile(
 )
 
 history = trainingFunctions.training_augmented(model, EPOCHS)
-trainingFunctions.plot_training_results(history, EPOCHS)
+trainingFunctions.plot_training_results(history, EPOCHS, model, save=True)
+trainingFunctions.increment_training_cpt()

@@ -7,12 +7,7 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
-
-imgWidth = 80
-imgHeight = 300
-batchSize = 64
-epochs = 10
-num_classes = 6
+from trainingConstants import *
 
 train_ds = tf.keras.preprocessing.image_dataset_from_directory(
   'dataset\\trainSorted',

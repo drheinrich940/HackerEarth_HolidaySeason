@@ -1,4 +1,3 @@
-import PIL
 import cv2
 import glob
 import os
@@ -9,6 +8,7 @@ dataTrainPath = 'dataset\\train'
 
 dataTestPathReformated = 'dataset\\testReformated'
 dataTrainPathReformated = 'dataset\\trainReformated'
+
 def displayDataInfo():
     xChanList = []
     yChanList = []

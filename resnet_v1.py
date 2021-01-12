@@ -14,6 +14,9 @@ from keras.regularizers import l2
 from keras import backend as K
 
 class ResNet_v1:
+
+    NET_NAME = 'ResNet_v1'
+
     @staticmethod
     def residual_module(data, K, stride, chanDim, red=False, reg=0.0001, bnEps=2e-5, bnMom=0.9):
         """
