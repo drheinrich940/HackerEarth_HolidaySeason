@@ -6,7 +6,7 @@ from resnet_v1 import ResNet_v1
 
 model = ResNet_v1.build(width=IMAG_WIDTH, height=IMG_HEIGHT, depth=IMG_DEPTH,
                         classes=NB_CLASSES, stages=STAGES,
-                        filters=FILTERS)
+                        filters=FILTERS, se=SE_MODULES)
 
 model.compile(
     optimizer=Adam(),

@@ -6,6 +6,9 @@ from keras.layers.convolutional import MaxPooling2D
 from keras.layers.convolutional import ZeroPadding2D
 from keras.layers.core import Activation
 from keras.layers.core import Dense
+from keras.layers import GlobalAveragePooling2D
+from keras.layers import Multiply
+from keras.layers import Reshape
 from keras.layers import Flatten
 from keras.layers import Input
 from keras.models import Model
@@ -18,7 +21,7 @@ class ResNet_v1:
     NET_NAME = 'ResNet_v1'
 
     @staticmethod
-    def residual_module(data, K, stride, chanDim, red=False, reg=0.0001, bnEps=2e-5, bnMom=0.9):
+    def residual_module(data, K, stride, chanDim, red=False, reg=0.0001, bnEps=2e-5, bnMom=0.9, se=False):
         """
         :param data: input to the residual module
         :param K: number of filters that will be learned by the final convolutional layer (the first two convolutional layers will learn K/4 filters)
@@ -48,6 +51,9 @@ class ResNet_v1:
         act3 = Activation("relu")(bn3)
         conv3 = Conv2D(K, (1, 1), use_bias=False, kernel_regularizer=l2(reg))(act3)
 
+        if se:
+            conv3 = ResNet_v1.se_module(conv3, K)
+
         # if we want to reduce the spatial size, apply a convolutional layer to the shortcut
         if red:
             shortcut = Conv2D(K, (1, 1), strides=stride, use_bias=False, kernel_regularizer=l2(reg))(act1)
@@ -59,7 +65,15 @@ class ResNet_v1:
         return x
 
     @staticmethod
-    def build(width, height, depth, classes, stages, filters, reg=0.0001, bnEps=2e-5, bnMom=0.9):
+    def se_module(input, channel, ratio=16):
+        se = GlobalAveragePooling2D()(input)
+        se = Dense(channel // ratio, activation='relu')(se)
+        se = Dense(channel, activation='sigmoid')(se)
+        se = Reshape([1, 1, channel])(se)
+        return Multiply()([input, se])
+
+    @staticmethod
+    def build(width, height, depth, classes, stages, filters, reg=0.0001, bnEps=2e-5, bnMom=0.9, se=False):
         """
         :param width: Width of the model input
         :param height: Height of the model input
@@ -106,7 +120,7 @@ class ResNet_v1:
             # loop over the number of layers in the stage
             for j in range(0, stages[i] - 1):
                 # apply a ResNet module
-                x = ResNet_v1.residual_module(x, filters[i + 1], (1, 1), chanDim, bnEps=bnEps, bnMom=bnMom)
+                x = ResNet_v1.residual_module(x, filters[i + 1], (1, 1), chanDim, bnEps=bnEps, bnMom=bnMom, se=se)
 
         # apply BN => ACT => POOL
         x = BatchNormalization(axis=chanDim, epsilon=bnEps,

@@ -79,10 +79,13 @@ def plot_training_results(history, epochs, model, save=False):
 
     if save:
         data_aug = ''
+        se = ''
         if H_FLIP:
             data_aug = data_aug + 'H_FLIP'
         if V_FLIP:
             data_aug = data_aug + 'V_FLIP'
+        if SE_MODULES:
+            se = se + 'SE_'
 
         text_file = open('trainingCounter.txt', 'r')
         train_cpt = text_file.readline()
@@ -91,9 +94,9 @@ def plot_training_results(history, epochs, model, save=False):
         stages = 's_' + str(STAGES).replace(',', '_').replace('(', '').replace(')', '').replace(' ', '')
         filters = 'f_' + str(FILTERS).replace(',', '_').replace('(', '').replace(')', '').replace(' ', '')
 
-        filename = model.name
+        model_name = se + model.name
         path = 'TrainingResults'
-        plt.savefig(path+'/'+filename+'_'+str(EPOCHS)+'_'+str(BATCH_SIZE)+'_'+str(data_aug)+'_'+stages+'_'+filters+'_'+train_cpt+'.png')
+        plt.savefig(path+'/'+model_name+'_'+str(EPOCHS)+'_'+str(BATCH_SIZE)+'_'+str(data_aug)+'_'+stages+'_'+filters+'_'+train_cpt+'.png')
 
     plt.show()
 

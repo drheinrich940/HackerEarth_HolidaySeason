@@ -5,6 +5,7 @@ BATCH_SIZE = 16
 NB_CLASSES = 6
 H_FLIP = True
 V_FLIP = False
+SE_MODULES = True
 
 EPOCHS = 50
 
