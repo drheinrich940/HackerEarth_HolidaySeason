@@ -40,3 +40,36 @@ dense_1 (Dense)              (None, 6)                 774
 ![Training results](TrainingResults/1simpleTraining.png)
 
 It is pretty obvious that even thought performance tends to increase for the training, the validation accuracy does not follow this is a sign of overfitting and lack of generalization.
+
+## Resnet
+
+Classical Resnet with this bloc architecture :
+
+![resnetbloc](modelDiagram/resnet_bloc.PNG)
+
+### Results
+
+![Training results](TrainingResults/2resnetV1E100.png)
+
+Even thought performances seem to be a little bit better, the problem of overfitting persist.
+
+## Restnet with data augmentation
+
+We used simple data augmentation with horizontal flip.
+
+![TrainingResults](TrainingResults/resnet_v1_50_16_H_FLIP_s_3_6_9_f_64_128_256_512_4.png)
+
+This seem to only make performances sway much more.
+
+## Resnet with squeeze and excitation and data augmentation
+
+We added squeeze and excitation bloc to our Restnet architecture, the basic building bloc is now :
+
+![sebloc](modelDiagram/se_bloc.PNG)
+
+### Results
+
+![trainingresults](TrainingResults/SE_resnet_v1_50_16_H_FLIP_s_3_6_9_f_64_128_256_512_5.png)
+
+This achieve better performances with less sway, less overfitting and at practically no additional computational cost.
+
