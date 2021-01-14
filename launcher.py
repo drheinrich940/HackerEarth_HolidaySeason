@@ -14,6 +14,6 @@ model.compile(
     metrics=['accuracy'],
 )
 
-history = trainingFunctions.training_augmented(model, EPOCHS)
+history = trainingFunctions.training_augmented(model, EPOCHS, SEED)
 trainingFunctions.plot_training_results(history, EPOCHS, model, save=True)
 trainingFunctions.increment_training_cpt()

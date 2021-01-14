@@ -32,25 +32,28 @@ def training(model, epochs):
     )
 
 
-def training_augmented(model, epochs):
-    train_datagen = ImageDataGenerator(horizontal_flip=H_FLIP, vertical_flip=V_FLIP)
-    val_datagen = ImageDataGenerator()
+def training_augmented(model, epochs, seed):
+    train_datagen = ImageDataGenerator(horizontal_flip=H_FLIP, vertical_flip=V_FLIP, validation_split=0.2)
 
-    train_generator = train_datagen.flow_from_directory(
-        'dataset\\augmented\\trainAugmented',
+    train_ds = train_datagen.flow_from_directory(
+        'dataset\\trainSorted',
         target_size=(IMG_HEIGHT, IMAG_WIDTH),
         batch_size=BATCH_SIZE,
+        subset="training",
+        seed=seed,
         class_mode='sparse')
 
-    val_generator = val_datagen.flow_from_directory(
-        'dataset\\augmented\\validationAugmented',
+    val_ds = train_datagen.flow_from_directory(
+        'dataset\\trainSorted',
         target_size=(IMG_HEIGHT, IMAG_WIDTH),
         batch_size=BATCH_SIZE,
+        subset="validation",
+        seed=seed,
         class_mode='sparse')
 
     return model.fit(
-        train_generator,
-        validation_data=val_generator,
+        train_ds,
+        validation_data=val_ds,
         epochs=epochs
     )
 
