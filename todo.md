@@ -9,6 +9,6 @@
 - Add csv file to log every training result and be able to compare them.
  
 
-- Choose our best Optimizer & Loss combo.
+- Choose our best Optimizer & Loss combo. Try Nadamax, Focal loss, and geometrical lsos ( circular or spherical )
 
 - Build procedure to train n-successive versions of the same architecture, and allow in depth analysis of the results.
