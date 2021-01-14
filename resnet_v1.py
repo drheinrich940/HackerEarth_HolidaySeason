@@ -69,7 +69,7 @@ class ResNet_v1:
         se = GlobalAveragePooling2D()(input)
         se = Dense(channel // ratio, activation='relu')(se)
         se = Dense(channel, activation='sigmoid')(se)
-        se = Reshape([1, 1, channel])(se)
+        # se = Reshape([1, 1, channel])(se)
         return Multiply()([input, se])
 
     @staticmethod
