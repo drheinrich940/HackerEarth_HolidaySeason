@@ -1,6 +1,6 @@
 from keras.losses import SparseCategoricalCrossentropy
 from keras.optimizers import Adam
-from trainingConstants import *
+from constants.trainingConstants import *
 import trainingFunctions
 from resnet_v1 import ResNet_v1
 
@@ -25,4 +25,5 @@ model.compile(
 
 history = trainingFunctions.training_augmented(model, EPOCHS, SEED)
 trainingFunctions.plot_training_results(history, EPOCHS, model, save=True)
+trainingFunctions.log_training_results(history, model)
 trainingFunctions.increment_training_cpt()
