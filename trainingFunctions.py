@@ -3,7 +3,7 @@ import tensorflow as tf
 from keras_preprocessing.image import ImageDataGenerator
 from trainingConstants import *
 import numpy as np
-import csv
+import pandas as pd
 
 def training(model, epochs):
     AUTOTUNE = tf.data.experimental.AUTOTUNE
@@ -164,22 +164,66 @@ def increment_training_cpt():
 
 # For each training, log :
 #   - model used : 'model',
-#           exemple : ResNet_v1
+#           example : ResNet_v1
 #   - improvements used : ['imp1', 'imp2', ...],
-#           exemple : ['SE', 'ASPP']
+#           example : ['SE', 'ASPP']
 #   - loss used : 'loss',
-#           exemple : 'SCCE'
+#           example : 'SCCE'
 #   - optimizer used : 'optim',
-#           exemple : 'Nadamax'
+#           example : 'Nadamax'
 #   - validation accuracy best, last, and history array : [best, last, [history]],
-#           exemple : [0.981, 0.973, [0, 0.1, 0.4, 0.981, 0.973]]
+#           example : [0.981, 0.973, [0, 0.1, 0.4, 0.981, 0.973]]
 #   - validation loss best, last, and history array : [best, last, [history]],
-#           exemple : [0.1, 0.12, [0.9, 0.8, 0.5, 0.1, 0.12]]
+#           example : [0.1, 0.12, [0.9, 0.8, 0.5, 0.1, 0.12]]
 #   - data aug used : ['data_aug1', 'data_aug2', ... ],
-#           exemple : ['V_FLIP', 'H_FLIP']
+#           example : ['V_FLIP', 'H_FLIP']
 #   - training iteration id (from file) : n,
-#           exemple : 5
-def log_training_results(val_acc, val_loss, ):
-    return
+#           example : 5
+#   ? - train validation split ratio : n,
+#           example : 0.2
+#   ? - train validation split seed : n,
+#           example : 123
+'''def log_training_results(history, _model):
+    model = 'model'
+    improvements = 'improvements'
+    loss = 'loss'
+    optimizer = 'optimizer'
+
+    data_aug = 'data_aug'
+
+    train_iter_id = 'train_iter_id'
+    batch_iter_id = 'batch_iter_id'
+
+    val_acc_best = 'val_acc_best'
+    val_acc_last = 'val_acc_last'
+    val_acc_hist = 'val_acc_hist'
+    val_loss_best = 'val_loss_best'
+    val_loss_last = 'val_loss_last'
+    val_loss_hist = 'val_loss_hist'
+
+    split_ratio = 'split_ratio'
+    split_seed = 'split_seed'
+
+    headers = [model, improvements, loss, optimizer, val_acc_best, val_acc_last, val_acc_hist, val_loss_best,
+               val_loss_last, val_loss_hist, data_aug, train_iter_id, batch_iter_id, split_ratio, split_seed]
+
+    text_file = open('trainingCounter.txt', 'r')
+    train_cpt = text_file.readline()
+    text_file.close()
+
+    _improvements = []
+    if SE_MODULES:
+        _improvements.append('SE')
+    if ASPP:
+        _improvements.append('ASPP')
+    if SAM:
+        _improvements.append('SAM')
+
+    df = pd.DataFrame([], columns=headers)
+    df = df.append({model: _model.name,
+                    improvements: _improvements,
+                    loss:
+                    train_iter_id: train_cpt}, ignore_index=True)'''
+
 
 
