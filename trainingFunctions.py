@@ -163,13 +163,22 @@ def increment_training_cpt():
     text_file.close()
 
 # For each training, log :
-#   - validation accuracy best, last, and history array : [best, last, [history]]
-#   - validation loss best, last, and history array : [best, last, [history]]
-#   - training iteration id (from file) : n
-#   - loss used : 'loss'
-#   - optimizer used : 'optim'
-#   - model used : 'model'
-#   - data aug used : ['data_aug1', 'data_aug2', ... ]
+#   - model used : 'model',
+#           exemple : ResNet_v1
+#   - improvements used : ['imp1', 'imp2', ...],
+#           exemple : ['SE', 'ASPP']
+#   - loss used : 'loss',
+#           exemple : 'SCCE'
+#   - optimizer used : 'optim',
+#           exemple : 'Nadamax'
+#   - validation accuracy best, last, and history array : [best, last, [history]],
+#           exemple : [0.981, 0.973, [0, 0.1, 0.4, 0.981, 0.973]]
+#   - validation loss best, last, and history array : [best, last, [history]],
+#           exemple : [0.1, 0.12, [0.9, 0.8, 0.5, 0.1, 0.12]]
+#   - data aug used : ['data_aug1', 'data_aug2', ... ],
+#           exemple : ['V_FLIP', 'H_FLIP']
+#   - training iteration id (from file) : n,
+#           exemple : 5
 def log_training_results(val_acc, val_loss, ):
     return
 
