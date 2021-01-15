@@ -162,8 +162,8 @@ def log_training_results(history, _model):
 
 # TODO: Finish implementation
 def display_training_results_from_csv():
-    df = pd.read_csv(TRAIN_LOGS_CSV)
-    print(df)
-
+    data = pd.read_csv(TRAIN_LOGS_CSV).to_numpy()
+    net_names = data[:, 0]
+    val_hists = data[:, 6]
 
 #display_training_results_from_csv()
