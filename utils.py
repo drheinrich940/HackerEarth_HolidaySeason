@@ -160,5 +160,10 @@ def log_training_results(history, _model):
 
     df.to_csv(TRAIN_LOGS_CSV, mode='a', header=False)
 
-def log_training_results():
-    return
+# TODO: Finish implementation
+def display_training_results_from_csv():
+    df = pd.read_csv(TRAIN_LOGS_CSV)
+    print(df)
+
+
+#display_training_results_from_csv()

@@ -56,6 +56,19 @@ def training_augmented(model, epochs, seed):
     )
 
 
+# TODO: Finish implementation
+def single_model_ensemble_training(runs, model, epochs, seed=None):
+    histories = []
+    for run in range(0, runs):
+        print('STARTING RUN ' + str(run))
+        if seed:
+            histories.append(training_augmented(model, epochs, seed))
+        else:
+            histories.append(training(model, epochs))
+
+    return histories
+
+
 def increment_training_cpt():
     text_file = open('trainingCounter.txt', 'r')
     cpt = text_file.readline()
