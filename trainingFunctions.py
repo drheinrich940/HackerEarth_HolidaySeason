@@ -3,6 +3,7 @@ import tensorflow as tf
 from keras_preprocessing.image import ImageDataGenerator
 from trainingConstants import *
 import numpy as np
+import csv
 
 def training(model, epochs):
     AUTOTUNE = tf.data.experimental.AUTOTUNE
@@ -160,5 +161,16 @@ def increment_training_cpt():
     text_file = open('trainingCounter.txt', 'w')
     n = text_file.write(str(int(cpt) + 1))
     text_file.close()
+
+# For each training, log :
+#   - validation accuracy best, last, and history array : [best, last, [history]]
+#   - validation loss best, last, and history array : [best, last, [history]]
+#   - training iteration id (from file) : n
+#   - loss used : 'loss'
+#   - optimizer used : 'optim'
+#   - model used : 'model'
+#   - data aug used : ['data_aug1', 'data_aug2', ... ]
+def log_training_results(val_acc, val_loss, ):
+    return
 
 

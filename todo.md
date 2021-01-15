@@ -11,3 +11,5 @@
 - Choose our best Optimizer & Loss combo. Try Nadamax, Focal loss, and geometrical lsos ( circular or spherical )
 
 - Build procedure to train n-successive versions of the same architecture, and allow in depth analysis of the results.
+
+- Allow to choose between different loss and optimizer in the training contants, and adapt code in consequence
