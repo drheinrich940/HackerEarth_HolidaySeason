@@ -1,1 +1,1 @@
-,model,improvements,loss,optimizer,val_acc_best,val_acc_last,val_acc_hist,val_loss_best,val_loss_last,val_loss_hist,data_aug,train_iter_id,batch_iter_id,split_ratio,split_seed
+,model,improvements,loss,optimizer,val_acc_best,val_acc_last,val_acc_hist,val_loss_best,val_loss_last,val_loss_hist,data_aug,train_iter_timestamp,batch_iter_id,split_ratio,split_seed

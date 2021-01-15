@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from constants.trainingConstants import *
 from constants.loggingConstants import *
+import datetime
 import numpy as np
 import pandas as pd
 
@@ -123,9 +124,6 @@ def log_training_results(history, _model):
     #           example : 0.2
     #   ? - train validation split seed : n,
     #           example : 123
-    text_file = open('trainingCounter.txt', 'r')
-    train_cpt = text_file.readline()
-    text_file.close()
 
     _improvements = []
     if SE_MODULES:
@@ -153,7 +151,7 @@ def log_training_results(history, _model):
                     VAL_LOSS_LAST_FIELD: history.history['val_loss'][-1],
                     VAL_LOSS_HIST_FIELD: history.history['val_loss'],
                     DATA_AUG_FIELD: _data_aug,
-                    TRAIN_ITER_ID_FIELD: train_cpt,
+                    TRAIN_ITER_TIMESTAMP: datetime.datetime.now().timestamp(),
                     BATCH_ITER_ID_FIELD: None,
                     SPLIT_RATIO_FIELD: SPLIT_RATIO,
                     SPLIT_SEED_FIELD: SEED}, ignore_index=True)
