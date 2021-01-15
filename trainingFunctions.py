@@ -71,8 +71,12 @@ def plot_training_results(history, epochs, model, save=False):
 
     fig.subplots_adjust(wspace=.35)
 
-    colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]
+    # As we plot validation acc & loss after their training counterparts, we use the corresponding curve color
+    #   to pain the box color of the values of interest of each curve. Second plotted curve's color can be got
+    #   using the following call.
+    color = plt.rcParams["axes.prop_cycle"].by_key()["color"][1]
 
+    # For the first subplot dedicated to Accuracy
     ax[0].plot(epochs_range, acc, label='Training Accuracy')
     ax[0].plot(epochs_range, val_acc, label='Validation Accuracy')
     ax[0].set_title('Training and Validation Accuracy')
@@ -81,43 +85,51 @@ def plot_training_results(history, epochs, model, save=False):
     ax[0].set_yticks(np.arange(0, 1.05, 0.05))
     ax[0].legend(loc='lower right')
 
+    # Annotate helps us draw text at a custom location corresponding to a chosen value. It allows us to select our
+    #   points of interests in the curve and add a custom labelled bbox displaying the exact value of the given point.
+    #   Here we display the last epoch's accuracy value, and the best accuracy encountered during training.
     ax[0].annotate('Max :%0.2f' % max(val_acc), xy=(1, max(val_acc)), xytext=(2, 8),
                    xycoords=('axes fraction', 'data'),
                    textcoords='offset points',
                    transform=ax[0].transAxes,
-                   bbox=dict(boxstyle="round", fc=colors[1], ec=colors[1]))
+                   bbox=dict(boxstyle="round", fc=color, ec=color))
 
     ax[0].annotate('Last :%0.2f' % val_acc[-1], xy=(1, val_acc[-1]), zorder=1, xytext=(2, -8),
                    xycoords=('axes fraction', 'data'),
                    textcoords='offset points',
-                   bbox=dict(boxstyle="round", fc=colors[0], ec=colors[0]))
+                   bbox=dict(boxstyle="round", fc=color, ec=color))
 
+    # For the second subplot dedicated to Loss
     ax[1].plot(epochs_range, loss, label='Training Loss')
     ax[1].plot(epochs_range, val_loss, label='Validation Loss')
     ax[1].set_title('Training and Validation Loss')
     ax[1].set_xlabel('epoch')
     ax[1].set_ylabel('loss')
-    ax[1].set_yticks(np.arange(0, 1.05, 0.05))
+    ax[1].set_yticks(np.arange(0, max(val_loss) + 0.05, 0.05))
     ax[1].legend(loc='upper right')
 
+    # Annotate helps us again to display last epoch's loss value, and the minimal loss value ever computed during train.
     ax[1].annotate('Min :%0.2f' % min(val_loss), xy=(1, min(val_loss)), xytext=(2, -8),
                    xycoords=('axes fraction', 'data'),
                    textcoords='offset points',
                    transform=ax[0].transAxes,
-                   bbox=dict(boxstyle="round", fc=colors[1], ec=colors[1]))
+                   bbox=dict(boxstyle="round", fc=color, ec=color))
 
     ax[1].annotate('Last :%0.2f' % val_loss[-1], xy=(1, val_loss[-1]), zorder=1, xytext=(2, 8),
                    xycoords=('axes fraction', 'data'),
                    textcoords='offset points',
-                   bbox=dict(boxstyle="round", fc=colors[1], ec=colors[1]))
+                   bbox=dict(boxstyle="round", fc=color, ec=color))
 
-    '''for var in (f1y, f2y):
-        print(var)
-        ax[1].annotate('%0.2f' % max(var), xy=(1, max(np.array(var))), xytext=(2, 0), 
-                     xycoords=('axes fraction', 'data'), textcoords='offset points', transform=ax[1].transAxes)
-    '''
-    plt.show()
-
+    # Plot saving procedure.
+    # Handles several variables to build a representative file name, including :
+    #   - Model name
+    #   - Optional SE
+    #   - Number of epochs
+    #   - Batch size
+    #   - Data augmentation used, including horizontal and vertical flips
+    #   - Stages of the model if it has any
+    #   - Filters if it has stages
+    #   - Training iteration of the model during the project.
     if save:
         data_aug = ''
         se = ''
