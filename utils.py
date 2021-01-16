@@ -103,6 +103,7 @@ def plot_training_results(history, epochs, model, save=False):
 
 
 def log_training_results(history, _model):
+    # todo add stages info to log
     # For each training, log :
     #   - model used : 'model',
     #           example : ResNet_v1
@@ -147,7 +148,7 @@ def log_training_results(history, _model):
                     VAL_ACC_BEST_FIELD: max(history.history['val_accuracy']),
                     VAL_ACC_LAST_FIELD: history.history['val_accuracy'][-1],
                     VAL_ACC_HIST_FIELD: history.history['val_accuracy'],
-                    VAL_LOSS_BEST_FIELD: max(history.history['val_loss']),
+                    VAL_LOSS_BEST_FIELD: min(history.history['val_loss']),
                     VAL_LOSS_LAST_FIELD: history.history['val_loss'][-1],
                     VAL_LOSS_HIST_FIELD: history.history['val_loss'],
                     DATA_AUG_FIELD: _data_aug,
