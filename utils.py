@@ -97,13 +97,13 @@ def plot_training_results(history, epochs, model, save=False):
 
         model_name = se + model.name
         path = 'TrainingResults'
-        plt.savefig(path+'/'+model_name+'_'+str(EPOCHS)+'_'+str(BATCH_SIZE)+'_'+str(data_aug)+'_'+stages+'_'+filters+'_'+train_cpt+'.png')
+        plt.savefig(path + '/' + model_name + '_' + str(EPOCHS) + '_' + str(BATCH_SIZE) + '_' + str(
+            data_aug) + '_' + stages + '_' + filters + '_' + train_cpt + '.png')
 
     plt.show()
 
 
-def log_training_results(history, _model):
-    # todo add stages info to log
+def log_training_results(history, _model, stages=STAGES):
     # For each training, log :
     #   - model used : 'model',
     #           example : ResNet_v1
@@ -119,6 +119,7 @@ def log_training_results(history, _model):
     #           example : [0.1, 0.12, [0.9, 0.8, 0.5, 0.1, 0.12]]
     #   - data aug used : ['data_aug1', 'data_aug2', ... ],
     #           example : ['V_FLIP', 'H_FLIP']
+    #   - stages used : ['stage1', 'stage2', 'stage3']
     #   - training iteration id (from file) : n,
     #           example : 5
     #   ? - train validation split ratio : n,
@@ -152,12 +153,14 @@ def log_training_results(history, _model):
                     VAL_LOSS_LAST_FIELD: history.history['val_loss'][-1],
                     VAL_LOSS_HIST_FIELD: history.history['val_loss'],
                     DATA_AUG_FIELD: _data_aug,
+                    VAL_STAGES_FIELD: stages,
                     TRAIN_ITER_TIMESTAMP: datetime.datetime.now().timestamp(),
                     BATCH_ITER_ID_FIELD: None,
                     SPLIT_RATIO_FIELD: SPLIT_RATIO,
                     SPLIT_SEED_FIELD: SEED}, ignore_index=True)
-
+    # Todo fix it
     df.to_csv(TRAIN_LOGS_CSV, mode='a', header=False)
+
 
 # TODO: Finish implementation
 def display_training_results_from_csv():
@@ -165,4 +168,4 @@ def display_training_results_from_csv():
     net_names = data[:, 0]
     val_hists = data[:, 6]
 
-#display_training_results_from_csv()
+# display_training_results_from_csv()

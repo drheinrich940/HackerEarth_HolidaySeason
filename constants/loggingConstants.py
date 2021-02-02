@@ -16,6 +16,7 @@ VAL_ACC_HIST_FIELD = 'val_acc_hist'
 VAL_LOSS_BEST_FIELD = 'val_loss_best'
 VAL_LOSS_LAST_FIELD = 'val_loss_last'
 VAL_LOSS_HIST_FIELD = 'val_loss_hist'
+VAL_STAGES_FIELD = 'val_stages'
 
 SPLIT_RATIO_FIELD = 'split_ratio'
 SPLIT_SEED_FIELD = 'split_seed'
